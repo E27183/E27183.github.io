@@ -1,1 +1,1 @@
-There's nothing here yet :p
+[Dice chess util](./dicey.html)
