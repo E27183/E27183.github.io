@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BoPoMoFo Typing Practice</title>
+    <style>
+        tr {
+            display: block;
+            float: left;
+        }
+
+        td {
+            display: block;
+        }
+
+        button {
+            height: 50px;
+            width: 50px;
+        }
+
+        .shift1 {
+            position: relative;
+            left: 16.7px;
+        }
+
+        .shift2 {
+            position: relative;
+            left: 33.3px;
+        }
+
+        .shift3 {
+            position: relative;
+            left: 50px;
+        }
+
+        button:not(.greenbg, .redbg, .cyanbg) .hidden {
+            visibility: hidden;
+        }
+
+        .removed {
+            display: none;
+        }
+
+        .green {
+            color: green;
+        }
+
+        .red {
+            color: red;
+        }
+
+        .cyanbg {
+            background-color: cyan;
+        }
+
+        .redbg {
+            background-color: red;
+        }
+
+        .greenbg {
+            background-color: lightgreen;
+        }
+
+        .orange {
+            color: orange;
+        }
+
+        .big_font {
+            font-size: 30px;
+            font-weight: 650;
+        }
+
+        .massive_font {
+            font-size: 400px;
+            font-weight: 4000;
+        }
+    </style>
+    <script>
+        const valid_zhuyin_combos = ["ㄓ", "ㄔ", "ㄕ", "ㄖ", "ㄗ", "ㄘ", "ㄙ", "ㄚ", "ㄅㄚ", "ㄆㄚ", "ㄇㄚ", "ㄈㄚ", "ㄉㄚ", "ㄊㄚ", "ㄋㄚ", "ㄌㄚ", "ㄍㄚ", "ㄎㄚ", "ㄏㄚ", "ㄓㄚ", "ㄔㄚ", "ㄕㄚ", "ㄗㄚ", "ㄘㄚ", "ㄙㄚ", "ㄛ", "ㄅㄛ", "ㄆㄛ", "ㄇㄛ", "ㄈㄛ", "ㄌㄛ", "ㄜ", "ㄇㄜ", "ㄉㄜ", "ㄊㄜ", "ㄋㄜ", "ㄌㄜ", "ㄍㄜ", "ㄎㄜ", "ㄏㄜ", "ㄓㄜ", "ㄔㄜ", "ㄕㄜ", "ㄖㄜ", "ㄗㄜ", "ㄘㄜ", "ㄙㄜ", "ㄝ", "ㄞ", "ㄅㄞ", "ㄆㄞ", "ㄇㄞ", "ㄉㄞ", "ㄊㄞ", "ㄋㄞ", "ㄌㄞ", "ㄍㄞ", "ㄎㄞ", "ㄏㄞ", "ㄓㄞ", "ㄔㄞ", "ㄕㄞ", "ㄗㄞ", "ㄘㄞ", "ㄙㄞ", "ㄟ", "ㄅㄟ", "ㄆㄟ", "ㄇㄟ", "ㄈㄟ", "ㄉㄟ", "ㄋㄟ", "ㄌㄟ", "ㄍㄟ", "ㄏㄟ", "ㄓㄟ", "ㄕㄟ", "ㄗㄟ", "ㄠ", "ㄅㄠ", "ㄆㄠ", "ㄇㄠ", "ㄉㄠ", "ㄊㄠ", "ㄋㄠ", "ㄌㄠ", "ㄍㄠ", "ㄎㄠ", "ㄏㄠ", "ㄓㄠ", "ㄔㄠ", "ㄕㄠ", "ㄖㄠ", "ㄗㄠ", "ㄘㄠ", "ㄙㄠ", "ㄡ", "ㄆㄡ", "ㄇㄡ", "ㄈㄡ", "ㄉㄡ", "ㄊㄡ", "ㄋㄡ", "ㄌㄡ", "ㄍㄡ", "ㄎㄡ", "ㄏㄡ", "ㄓㄡ", "ㄔㄡ", "ㄕㄡ", "ㄖㄡ", "ㄗㄡ", "ㄘㄡ", "ㄙㄡ", "ㄢ", "ㄅㄢ", "ㄆㄢ", "ㄇㄢ", "ㄈㄢ", "ㄉㄢ", "ㄊㄢ", "ㄋㄢ", "ㄌㄢ", "ㄍㄢ", "ㄎㄢ", "ㄏㄢ", "ㄓㄢ", "ㄔㄢ", "ㄕㄢ", "ㄖㄢ", "ㄗㄢ", "ㄘㄢ", "ㄙㄢ", "ㄣ", "ㄅㄣ", "ㄆㄣ", "ㄇㄣ", "ㄈㄣ", "ㄋㄣ", "ㄍㄣ", "ㄎㄣ", "ㄏㄣ", "ㄓㄣ", "ㄔㄣ", "ㄕㄣ", "ㄖㄣ", "ㄗㄣ", "ㄘㄣ", "ㄙㄣ", "ㄤ", "ㄅㄤ", "ㄆㄤ", "ㄇㄤ", "ㄈㄤ", "ㄉㄤ", "ㄊㄤ", "ㄋㄤ", "ㄌㄤ", "ㄍㄤ", "ㄎㄤ", "ㄏㄤ", "ㄓㄤ", "ㄔㄤ", "ㄕㄤ", "ㄖㄤ", "ㄗㄤ", "ㄘㄤ", "ㄙㄤ", "ㄥ", "ㄅㄥ", "ㄆㄥ", "ㄇㄥ", "ㄈㄥ", "ㄉㄥ", "ㄊㄥ", "ㄋㄥ", "ㄌㄥ", "ㄍㄥ", "ㄎㄥ", "ㄏㄥ", "ㄓㄥ", "ㄔㄥ", "ㄕㄥ", "ㄖㄥ", "ㄗㄥ", "ㄘㄥ", "ㄙㄥ", "ㄦ", "ㄧ", "ㄅㄧ", "ㄆㄧ", "ㄇㄧ", "ㄉㄧ", "ㄊㄧ", "ㄋㄧ", "ㄌㄧ", "ㄐㄧ", "ㄑㄧ", "ㄒㄧ", "ㄧㄚ", "ㄉㄧㄚ", "ㄌㄧㄚ", "ㄐㄧㄚ", "ㄑㄧㄚ", "ㄒㄧㄚ", "ㄧㄛ", "ㄧㄝ", "ㄅㄧㄝ", "ㄆㄧㄝ", "ㄇㄧㄝ", "ㄉㄧㄝ", "ㄊㄧㄝ", "ㄋㄧㄝ", "ㄌㄧㄝ", "ㄐㄧㄝ", "ㄑㄧㄝ", "ㄒㄧㄝ", "ㄧㄞ", "ㄧㄠ", "ㄅㄧㄠ", "ㄆㄧㄠ", "ㄇㄧㄠ", "ㄉㄧㄠ", "ㄊㄧㄠ", "ㄋㄧㄠ", "ㄌㄧㄠ", "ㄐㄧㄠ", "ㄑㄧㄠ", "ㄒㄧㄠ", "ㄧㄡ", "ㄇㄧㄡ", "ㄉㄧㄡ", "ㄋㄧㄡ", "ㄌㄧㄡ", "ㄐㄧㄡ", "ㄑㄧㄡ", "ㄒㄧㄡ", "ㄧㄢ", "ㄅㄧㄢ", "ㄆㄧㄢ", "ㄇㄧㄢ", "ㄉㄧㄢ", "ㄊㄧㄢ", "ㄋㄧㄢ", "ㄌㄧㄢ", "ㄐㄧㄢ", "ㄑㄧㄢ", "ㄒㄧㄢ", "ㄧㄣ", "ㄅㄧㄣ", "ㄆㄧㄣ", "ㄇㄧㄣ", "ㄋㄧㄣ", "ㄌㄧㄣ", "ㄐㄧㄣ", "ㄑㄧㄣ", "ㄒㄧㄣ", "ㄧㄤ", "ㄋㄧㄤ", "ㄌㄧㄤ", "ㄐㄧㄤ", "ㄑㄧㄤ", "ㄒㄧㄤ", "ㄧㄥ", "ㄅㄧㄥ", "ㄆㄧㄥ", "ㄇㄧㄥ", "ㄉㄧㄥ", "ㄊㄧㄥ", "ㄋㄧㄥ", "ㄌㄧㄥ", "ㄐㄧㄥ", "ㄑㄧㄥ", "ㄒㄧㄥ", "ㄨ", "ㄅㄨ", "ㄆㄨ", "ㄇㄨ", "ㄈㄨ", "ㄉㄨ", "ㄊㄨ", "ㄋㄨ", "ㄌㄨ", "ㄍㄨ", "ㄎㄨ", "ㄏㄨ", "ㄓㄨ", "ㄔㄨ", "ㄕㄨ", "ㄖㄨ", "ㄗㄨ", "ㄘㄨ", "ㄙㄨ", "ㄨㄚ", "ㄍㄨㄚ", "ㄎㄨㄚ", "ㄏㄨㄚ", "ㄓㄨㄚ", "ㄔㄨㄚ", "ㄕㄨㄚ", "ㄨㄛ", "ㄉㄨㄛ", "ㄊㄨㄛ", "ㄋㄨㄛ", "ㄌㄨㄛ", "ㄍㄨㄛ", "ㄎㄨㄛ", "ㄏㄨㄛ", "ㄓㄨㄛ", "ㄔㄨㄛ", "ㄕㄨㄛ", "ㄖㄨㄛ", "ㄗㄨㄛ", "ㄘㄨㄛ", "ㄙㄨㄛ", "ㄨㄞ", "ㄍㄨㄞ", "ㄎㄨㄞ", "ㄏㄨㄞ", "ㄓㄨㄞ", "ㄔㄨㄞ", "ㄕㄨㄞ", "ㄨㄟ", "ㄉㄨㄟ", "ㄊㄨㄟ", "ㄍㄨㄟ", "ㄎㄨㄟ", "ㄏㄨㄟ", "ㄓㄨㄟ", "ㄔㄨㄟ", "ㄕㄨㄟ", "ㄖㄨㄟ", "ㄗㄨㄟ", "ㄘㄨㄟ", "ㄙㄨㄟ", "ㄨㄢ", "ㄉㄨㄢ", "ㄊㄨㄢ", "ㄋㄨㄢ", "ㄌㄨㄢ", "ㄍㄨㄢ", "ㄎㄨㄢ", "ㄏㄨㄢ", "ㄓㄨㄢ", "ㄔㄨㄢ", "ㄕㄨㄢ", "ㄖㄨㄢ", "ㄗㄨㄢ", "ㄘㄨㄢ", "ㄙㄨㄢ", "ㄨㄣ", "ㄉㄨㄣ", "ㄊㄨㄣ", "ㄌㄨㄣ", "ㄍㄨㄣ", "ㄎㄨㄣ", "ㄏㄨㄣ", "ㄓㄨㄣ", "ㄔㄨㄣ", "ㄕㄨㄣ", "ㄖㄨㄣ", "ㄗㄨㄣ", "ㄘㄨㄣ", "ㄙㄨㄣ", "ㄨㄤ", "ㄍㄨㄤ", "ㄎㄨㄤ", "ㄏㄨㄤ", "ㄓㄨㄤ", "ㄔㄨㄤ", "ㄕㄨㄤ", "ㄨㄥ", "ㄉㄨㄥ", "ㄊㄨㄥ", "ㄋㄨㄥ", "ㄌㄨㄥ", "ㄍㄨㄥ", "ㄎㄨㄥ", "ㄏㄨㄥ", "ㄓㄨㄥ", "ㄔㄨㄥ", "ㄖㄨㄥ", "ㄗㄨㄥ", "ㄘㄨㄥ", "ㄙㄨㄥ", "ㄩ", "ㄋㄩ", "ㄌㄩ", "ㄐㄩ", "ㄑㄩ", "ㄒㄩ", "ㄩㄝ", "ㄋㄩㄝ", "ㄌㄩㄝ", "ㄐㄩㄝ", "ㄑㄩㄝ", "ㄒㄩㄝ", "ㄩㄢ", "ㄌㄩㄢ", "ㄐㄩㄢ", "ㄑㄩㄢ", "ㄒㄩㄢ", "ㄩㄣ", "ㄐㄩㄣ", "ㄑㄩㄣ", "ㄒㄩㄣ", "ㄩㄥ", "ㄐㄩㄥ", "ㄑㄩㄥ", "ㄒㄩㄥ"];
+        const valid_tones = ["ˇ", "ˋ", "ˊ", "˙", ""];
+        const valid_characters = [["ㄅ", "ㄆ", "ㄇ", "ㄈ"], ["ㄉ", "ㄊ", "ㄋ", "ㄌ"], ["ˇ", "ㄍ", "ㄎ", "ㄏ"], ["ˋ", "ㄐ", "ㄑ", "ㄒ"], ["ㄓ", "ㄔ", "ㄕ", "ㄖ"], ["ˊ", "ㄗ", "ㄘ", "ㄙ"], ["˙", "ㄧ", "ㄨ", "ㄩ"], ["ㄚ", "ㄛ", "ㄜ", "ㄝ"], ["ㄞ", "ㄟ", "ㄠ", "ㄡ"], ["ㄢ", "ㄣ", "ㄤ", "ㄥ"], ["ㄦ"]];
+        const valid_zhuyin_combos_length = valid_zhuyin_combos.length;
+        var handle_key;
+        const codeMap = new Map([["Minus", "ㄦ"], ["Digit0", "ㄢ"], ["Digit1", "ㄅ"], ["Digit2", "ㄉ"], ["Digit3", "ˇ"], ["Digit4", "ˋ"], ["Digit5", "ㄓ"], ["Digit6", "ˊ"], ["Digit7", "˙"], ["Digit8", "ㄚ"], ["Digit9", "ㄞ"], ["KeyQ", "ㄆ"], ["KeyW", "ㄊ"], ["KeyE", "ㄍ"], ["KeyR", "ㄐ"], ["KeyT", "ㄔ"], ["KeyY", "ㄗ"], ["KeyU", "ㄧ"], ["KeyI", "ㄛ"], ["KeyO", "ㄟ"], ["KeyP", "ㄣ"], ["KeyA", "ㄇ"], ["KeyS", "ㄋ"], ["KeyD", "ㄎ"], ["KeyF", "ㄑ"], ["KeyG", "ㄕ"], ["KeyH", "ㄘ"], ["KeyJ", "ㄨ"], ["KeyK", "ㄜ"], ["KeyL", "ㄠ"], ["Semicolon", "ㄤ"], ["KeyZ", "ㄈ"], ["KeyX", "ㄌ"], ["KeyC", "ㄏ"], ["KeyV", "ㄒ"], ["KeyB", "ㄖ"], ["KeyN", "ㄙ"], ["KeyM", "ㄩ"], ["Comma", "ㄝ"], ["Period", "ㄡ"], ["Slash", "ㄥ"]]);
+        var colourMap = new Map([[0, "green"], [1, "red"], [2, "orange"]]);
+        var typing_results_array;
+        var active_line;
+        var upcoming_line;
+        var keyboard_coloured = [];
+        function generate_valid_line(terminal_length) {
+            let current_length = 0;
+            let builder = [];
+            while (current_length < terminal_length) {
+                let i = Math.floor(Math.random() * valid_zhuyin_combos_length);
+                builder.push(valid_zhuyin_combos[i]);
+                let j = Math.floor(Math.random() * 5);
+                builder.push(valid_tones[j]);
+                current_length += valid_zhuyin_combos[i].length + valid_tones[j].length;
+            }
+            return builder.join(" ");
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+            const keyboard_visibility = document.getElementById("keyboard_visibility");
+            const keyboard_section = document.getElementById("keyboard_section");
+            const keyboard_hideables = document.getElementsByClassName("hideable1");
+            const primary_para = document.getElementById("main1");
+            const secondary_para = document.getElementById("main2");
+            const single_char = document.getElementById("simple");
+            const single_char_para = document.getElementById("single1");
+            const single_char_testing_cols = document.getElementById("single_char_testing");
+            const sctc_label = document.getElementById("sctc_label");
+            const sctc_ids = ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "s10", "s11"];
+            function update_single_char(key) {
+                colour_keyboard(key, single_char_para.textContent);
+                let sctc_selected = sctc_ids.filter((s) => {
+                    return document.getElementById(s).checked;
+                });
+                var row;
+                if (sctc_selected.length == 0) {
+                    row = Math.floor(Math.random() * valid_characters.length);
+                } else {
+                    let c = Math.floor(Math.random() * sctc_selected.length);
+                    row = parseInt(sctc_selected[c].substring(1)) - 1;
+                }
+                if (row == 10 && Math.random() < 0.75) {
+                    update_single_char(key);
+                    return;
+                }
+                let id = Math.floor(Math.random() * valid_characters[row].length);
+                single_char_para.textContent = valid_characters[row][id];
+            }
+            function colour_keyboard(attempt, correct) {
+                for (var c of keyboard_coloured) {
+                    document.getElementById(c).classList.remove("greenbg", "redbg", "cyanbg");
+                }
+                keyboard_coloured = [correct];
+                if (correct != attempt) {
+                    document.getElementById(attempt).classList.add("redbg");
+                    document.getElementById(correct).classList.add("cyanbg");
+                    keyboard_coloured.push(attempt);
+                } else {
+                    document.getElementById(correct).classList.add("greenbg");
+                }
+            }
+            function set_line_display() {
+                let out = [];
+                for (i in typing_results_array) {
+                    out.push(`<span class="${colourMap.get(typing_results_array[i])}">${active_line[i]}</span>`);
+                }
+                out.push(active_line.substring(typing_results_array.length));
+                return out.join("");
+            }
+            function new_typing_line() {
+                if (!upcoming_line) {
+                    upcoming_line = generate_valid_line(50);
+                }
+                typing_results_array = [2];
+                typing_index = 0;
+                active_line = upcoming_line;
+                upcoming_line = generate_valid_line(50);
+                secondary_para.textContent = upcoming_line;
+                primary_para.innerHTML = set_line_display();
+            }
+            handle_key = (key) => {
+                if (single_char.checked) {
+                    update_single_char(key);
+                } else {
+                    let typing_len = typing_results_array.length
+                    let p = typing_len - 1;
+                    colour_keyboard(key, active_line[p]);
+                    if (key == active_line[p]) {
+                        typing_results_array[p] = 0;
+                    } else {
+                        typing_results_array[p] = 1;
+                    }
+                    let returnFlag = 0;
+                    function handle_whitespace() {
+                        p++;
+                        if (p >= active_line.length) {
+                            returnFlag = 1;
+                        } else if (active_line[p] == " ") {
+                            typing_results_array.push(0);
+                            handle_whitespace();
+                        }
+                    }
+                    handle_whitespace();
+                    if (returnFlag == 1) {
+                        new_typing_line();
+                        return;
+                    }
+                    typing_results_array.push(2);
+                    primary_para.innerHTML = set_line_display();
+                }
+            }
+            function visibility_handler() {
+                if (keyboard_visibility.checked) {
+                    for (const e of keyboard_hideables) {
+                        e.classList.remove("hidden");
+                    }
+                } else {
+                    for (const e of keyboard_hideables) {
+                        e.classList.add("hidden");
+                    }
+                }
+            };
+            keyboard_visibility.addEventListener("change", visibility_handler);
+            function single_char_handler() {
+                if (single_char.checked) {
+                    primary_para.classList.add("removed");
+                    secondary_para.classList.add("removed");
+                    single_char_para.classList.remove("removed");
+                    single_char_testing_cols.classList.remove("removed");
+                    sctc_label.classList.remove("removed");
+                } else {
+                    primary_para.classList.remove("removed");
+                    secondary_para.classList.remove("removed");
+                    single_char_para.classList.add("removed");
+                    single_char_testing_cols.classList.add("removed");
+                    sctc_label.classList.add("removed");
+                }
+            }
+            single_char.addEventListener("change", single_char_handler);
+            document.onkeypress = (e) => {
+                e = e || window.event;
+                handle_key(codeMap.get(e.code));
+                e.preventDefault();
+            };
+            new_typing_line();
+            visibility_handler();
+            single_char_handler();
+        });
+    </script>
+</head>
+
+<body>
+    <section>
+        <label for="keyboard_visibility">All visible</label>
+        <input type="checkbox" id="keyboard_visibility" checked>
+        <label for="simple">Singe Character Mode</label>
+        <input type="checkbox" id="simple">
+        <label for="single_char_testing" id="sctc_label">Columns to test:</label>
+        <span id="single_char_testing">
+            <label for="s1">1</label>
+            <input type="checkbox" id="s1" checked>
+            <label for="s1">2</label>
+            <input type="checkbox" id="s2" checked>
+            <label for="s1">3</label>
+            <input type="checkbox" id="s3" checked>
+            <label for="s1">4</label>
+            <input type="checkbox" id="s4" checked>
+            <label for="s1">5</label>
+            <input type="checkbox" id="s5" checked>
+            <label for="s1">6</label>
+            <input type="checkbox" id="s6" checked>
+            <label for="s1">7</label>
+            <input type="checkbox" id="s7" checked>
+            <label for="s1">8</label>
+            <input type="checkbox" id="s8" checked>
+            <label for="s1">9</label>
+            <input type="checkbox" id="s9" checked>
+            <label for="s1">10</label>
+            <input type="checkbox" id="s10" checked>
+            <label for="s1">11</label>
+            <input type="checkbox" id="s11" checked>
+        </span>
+    </section>
+    <section id="keyboard_section">
+        <table>
+            <tr>
+                <td><button id="ㄅ" onclick="handle_key('ㄅ')"><span class="hideable1">ㄅ</span></button></td>
+                <td class="shift1"><button id="ㄆ" onclick="handle_key('ㄆ')"><span class="hideable1">ㄆ</span></button>
+                </td>
+                <td class="shift2"><button id="ㄇ" onclick="handle_key('ㄇ')"><span class="hideable1">ㄇ</span></button>
+                </td>
+                <td class="shift3"><button id="ㄈ" onclick="handle_key('ㄈ')"><span class="hideable1">ㄈ</span></button>
+                </td>
+            </tr>
+            <tr>
+                <td><button id="ㄉ" onclick="handle_key('ㄉ')"><span class="hideable1">ㄉ</span></button></td>
+                <td class="shift1"><button id="ㄊ" onclick="handle_key('ㄊ')"><span class="hideable1">ㄊ</span></button>
+                </td>
+                <td class="shift2"><button id="ㄋ" onclick="handle_key('ㄋ')"><span class="hideable1">ㄋ</span></button>
+                </td>
+                <td class="shift3"><button id="ㄌ" onclick="handle_key('ㄌ')"><span class="hideable1">ㄌ</span></button>
+                </td>
+            </tr>
+            <tr>
+                <td><button id="ˇ" onclick="handle_key('ˇ')"><span class="hideable1">ˇ</span></button></td>
+                <td class="shift1"><button id="ㄍ" onclick="handle_key('ㄍ')"><span class="hideable1">ㄍ</span></button>
+                </td>
+                <td class="shift2"><button id="ㄎ" onclick="handle_key('ㄎ')"><span class="hideable1">ㄎ</span></button>
+                </td>
+                <td class="shift3"><button id="ㄏ" onclick="handle_key('ㄏ')"><span class="hideable1">ㄏ</span></button>
+                </td>
+            </tr>
+            <tr>
+                <td><button id="ˋ" onclick="handle_key('ˋ')"><span class="hideable1">ˋ</span></button></td>
+                <td class="shift1"><button id="ㄐ" onclick="handle_key('ㄐ')"><span class="hideable1">ㄐ</span></button>
+                </td>
+                <td class="shift2"><button id="ㄑ" onclick="handle_key('ㄑ')"><span class="hideable1">ㄑ</span></button>
+                </td>
+                <td class="shift3"><button id="ㄒ" onclick="handle_key('ㄒ')"><span class="hideable1">ㄒ</span></button>
+                </td>
+            </tr>
+            <tr>
+                <td><button id="ㄓ" onclick="handle_key('ㄓ')"><span class="hideable1">ㄓ</span></button></td>
+                <td class="shift1"><button id="ㄔ" onclick="handle_key('ㄔ')"><span class="hideable1">ㄔ</span></button>
+                </td>
+                <td class="shift2"><button id="ㄕ" onclick="handle_key('ㄕ')"><span class="hideable1">ㄕ</span></button>
+                </td>
+                <td class="shift3"><button id="ㄖ" onclick="handle_key('ㄖ')"><span class="hideable1">ㄖ</span></button>
+                </td>
+            </tr>
+            <tr>
+                <td><button id="ˊ" onclick="handle_key('ˊ')"><span class="hideable1">ˊ</span></button></td>
+                <td class="shift1"><button id="ㄗ" onclick="handle_key('ㄗ')"><span class="hideable1">ㄗ</span></button>
+                </td>
+                <td class="shift2"><button id="ㄘ" onclick="handle_key('ㄘ')"><span class="hideable1">ㄘ</span></button>
+                </td>
+                <td class="shift3"><button id="ㄙ" onclick="handle_key('ㄙ')"><span class="hideable1">ㄙ</span></button>
+                </td>
+            </tr>
+            <tr>
+                <td><button id="˙" onclick="handle_key('˙')"><span class="hideable1">˙</span></button></td>
+                <td class="shift1"><button id="ㄧ" onclick="handle_key('ㄧ')"><span class="hideable1">ㄧ</span></button>
+                </td>
+                <td class="shift2"><button id="ㄨ" onclick="handle_key('ㄨ')"><span class="hideable1">ㄨ</span></button>
+                </td>
+                <td class="shift3"><button id="ㄩ" onclick="handle_key('ㄩ')"><span class="hideable1">ㄩ</span></button>
+                </td>
+            </tr>
+            <tr>
+                <td><button id="ㄚ" onclick="handle_key('ㄚ')"><span class="hideable1">ㄚ</span></button></td>
+                <td class="shift1"><button id="ㄛ" onclick="handle_key('ㄛ')"><span class="hideable1">ㄛ</span></button>
+                </td>
+                <td class="shift2"><button id="ㄜ" onclick="handle_key('ㄜ')"><span class="hideable1">ㄜ</span></button>
+                </td>
+                <td class="shift3"><button id="ㄝ" onclick="handle_key('ㄝ')"><span class="hideable1">ㄝ</span></button>
+                </td>
+            </tr>
+            <tr>
+                <td><button id="ㄞ" onclick="handle_key('ㄞ')"><span class="hideable1">ㄞ</span></button></td>
+                <td class="shift1"><button id="ㄟ" onclick="handle_key('ㄟ')"><span class="hideable1">ㄟ</span></button>
+                </td>
+                <td class="shift2"><button id="ㄠ" onclick="handle_key('ㄠ')"><span class="hideable1">ㄠ</span></button>
+                </td>
+                <td class="shift3"><button id="ㄡ" onclick="handle_key('ㄡ')"><span class="hideable1">ㄡ</span></button>
+                </td>
+            </tr>
+            <tr>
+                <td><button id="ㄢ" onclick="handle_key('ㄢ')"><span class="hideable1">ㄢ</span></button></td>
+                <td class="shift1"><button id="ㄣ" onclick="handle_key('ㄣ')"><span class="hideable1">ㄣ</span></button>
+                </td>
+                <td class="shift2"><button id="ㄤ" onclick="handle_key('ㄤ')"><span class="hideable1">ㄤ</span></button>
+                </td>
+                <td class="shift3"><button id="ㄥ" onclick="handle_key('ㄥ')"><span class="hideable1">ㄥ</span></button>
+                </td>
+            </tr>
+            <tr>
+                <td><button id="ㄦ" onclick="handle_key('ㄦ')"><span class="hideable1">ㄦ</span></button></td>
+            </tr>
+        </table>
+    </section>
+    <section>
+        <p id="main1" class="big_font"></p>
+        <p id="main2" class="big_font"></p>
+    </section>
+    <section>
+        <div id="single1" class="massive_font removed">ㄣ</div>
+    </section>
+</body>
+
+</html>
