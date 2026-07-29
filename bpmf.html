@@ -119,6 +119,9 @@
                 var row;
                 if (sctc_selected[0] == "s11") {
                     single_char_para.textContent = "ㄦ";
+                    if (key != null) {
+                        colour_keyboard(key, single_char_para.textContent);
+                    }
                     return;
                 }
                 if (sctc_selected.length == 0) {
