@@ -112,12 +112,15 @@
             const single_char_testing_cols = document.getElementById("single_char_testing");
             const sctc_label = document.getElementById("sctc_label");
             const sctc_ids = ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "s10", "s11"];
-            function update_single_char(key) {
-                colour_keyboard(key, single_char_para.textContent);
+            function update_single_char(key = null) {
                 let sctc_selected = sctc_ids.filter((s) => {
                     return document.getElementById(s).checked;
                 });
                 var row;
+                if (sctc_selected[0] == "s11") {
+                    single_char_para.textContent = "ㄦ";
+                    return;
+                }
                 if (sctc_selected.length == 0) {
                     row = Math.floor(Math.random() * valid_characters.length);
                 } else {
@@ -129,6 +132,13 @@
                     return;
                 }
                 let id = Math.floor(Math.random() * valid_characters[row].length);
+                if (valid_characters[row][id] == single_char_para.textContent) {
+                    update_single_char(key);
+                    return;
+                }
+                if (key != null) {
+                    colour_keyboard(key, single_char_para.textContent);
+                }
                 single_char_para.textContent = valid_characters[row][id];
             }
             function colour_keyboard(attempt, correct) {
@@ -224,12 +234,15 @@
             single_char.addEventListener("change", single_char_handler);
             document.onkeypress = (e) => {
                 e = e || window.event;
-                handle_key(codeMap.get(e.code));
+                if (Array.from(codeMap.keys()).includes(e.code)) {
+                    handle_key(codeMap.get(e.code));
+                }
                 e.preventDefault();
             };
             new_typing_line();
             visibility_handler();
             single_char_handler();
+            update_single_char();
         });
     </script>
 </head>
@@ -368,7 +381,7 @@
         <p id="main2" class="big_font"></p>
     </section>
     <section>
-        <div id="single1" class="massive_font removed">ㄣ</div>
+        <div id="single1" class="massive_font removed"></div>
     </section>
 </body>
 
